@@ -16,5 +16,6 @@ class PaidModel extends Model
         'product_name',
         'product_image',
         'product_price',
+        'quantity'
     ];
 }

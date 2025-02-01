@@ -32,7 +32,9 @@ $user_id = session('user_id');
                         <a class="nav-link active" aria-current="page" href="/designer/dashboard">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Cart</a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cartModal">
+                            View Cart
+                        </button>
                     </li>
 
                     <!-- Profile Section -->

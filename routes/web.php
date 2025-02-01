@@ -37,5 +37,17 @@ Route::delete('/deleteproduct/{id}', [DesignerController::class, 'deleteProducts
 // Update a Product
 Route::put('/updateproduct', [DesignerController::class, 'updateProduct'])->name('updateproduct');
 
+// Add to cart
+Route::post('/addtocart', [customerController::class, 'addToCart'])->name('addtocart');
+
+// detail
+Route::get('/detail/{designer_id}/{product_image}/{product_price}/{product_name}', [customerController::class, 'detailToCart']
+)->name('detail');
+
+// Route::get('/cart-data', [customerController::class, 'getCartData'])->name('getCartData');
+Route::delete('/remove-from-cart/{id}', [customerController::class, 'removeFromCart'])->name('removeFromCart');
+Route::post('/checkout', [customerController::class, 'initiatePayment'])->name('checkout');
+Route::get('/payment/callback', [customerController::class, 'paymentCallback'])->name('payment.callback');
+
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
