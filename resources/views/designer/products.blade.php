@@ -6,52 +6,53 @@
     $user_id = session('user_id');
     ?>
     <!-- Edit Product Modal -->
-<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <!-- Modal Header -->
-            <div class="modal-header">
-                <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            
-            <!-- Modal Body with Form -->
-            <div class="modal-body">
-                <form action="{{ route('updateproduct') }}" method="POST" enctype="multipart/form-data" id="editProductForm">
-                    @csrf
-                    @method('PUT')
-                    
-                    <!-- Hidden Field for Product ID -->
-                    <input type="hidden" name="product_id" id="product-id">
-                    
-                    <!-- Product Name and Price Fields -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <input type="text" class="form-control" id="fashion-name" name="product_name"
-                                placeholder="Fashion Name" required style="border-color: #b2ebf2;">
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <!-- Modal Body with Form -->
+                <div class="modal-body">
+                    <form action="{{ route('updateproduct') }}" method="POST" enctype="multipart/form-data"
+                        id="editProductForm">
+                        @csrf
+                        @method('PUT')
+
+                        <!-- Hidden Field for Product ID -->
+                        <input type="hidden" name="product_id" id="product-id">
+
+                        <!-- Product Name and Price Fields -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" id="fashion-name" name="product_name"
+                                    placeholder="Fashion Name" required style="border-color: #b2ebf2;">
+                            </div>
+                            <div class="col-md-6">
+                                <input type="number" class="form-control" id="fashion-price" name="product_price"
+                                    placeholder="Price" required style="border-color: #b2ebf2;">
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <input type="number" class="form-control" id="fashion-price" name="product_price"
-                                placeholder="Price" required style="border-color: #b2ebf2;">
+
+                        <!-- Image Upload and Submit Button -->
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <input type="file" class="form-control" id="fashion-image" name="product_image"
+                                    placeholder="Fashion Image" style="border-color: #b2ebf2;">
+                            </div>
+                            <div class="col-md-6">
+                                <button type="submit" class="btn w-100 bg-success"
+                                    style="background-color: #4caf50; color: white; border: none;">Save Changes</button>
+                            </div>
                         </div>
-                    </div>
-    
-                    <!-- Image Upload and Submit Button -->
-                    <div class="row mb-2">
-                        <div class="col-md-6">
-                            <input type="file" class="form-control" id="fashion-image" name="product_image"
-                                placeholder="Fashion Image" style="border-color: #b2ebf2;">
-                        </div>
-                        <div class="col-md-6">
-                            <button type="submit" class="btn w-100 bg-success"
-                                style="background-color: #4caf50; color: white; border: none;">Save Changes</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
     <div class="container" style="background-color: #f1f8f7;">
@@ -98,23 +99,22 @@
                                                 ${{ number_format($product['product_price'], 2) }}
                                             </span>
                                         </td>
-                                        <td class="text-center">
+                                        <td class="justify-content-end gap-2 d-flex">
                                             <!-- Buttons with trigger-->
-                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editProductModal" 
-                                            onclick="editProduct({{ $product->product_id }}, '{{ $product->product_name }}', {{ $product->product_price }}, '{{ $product->product_image }}')">
-                                            Edit
-                                        </button>
-                                        
-
-                                        <form action="{{ route('deleteproduct', $product->product_id) }}" method="POST"
-                                            id="delete-form-{{ $product->product_id }}">
-                                          @csrf
-                                          @method('DELETE') <!-- Spoof DELETE method -->
-                                          <button type="button" class="btn btn-danger"
-                                                  onclick="confirmDelete({{ $product->product_id }})">Delete</button>
-                                      </form>
-
-
+                                            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                                data-bs-target="#editProductModal"
+                                                onclick="editProduct({{ $product->product_id }}, '{{ $product->product_name }}', {{ $product->product_price }}, '{{ $product->product_image }}')">
+                                                <i class="fa fa-edit"></i>
+                                            </button>
+                                            <form action="{{ route('deleteproduct', $product->product_id) }}" method="POST"
+                                                id="delete-form-{{ $product->product_id }}">
+                                                @csrf
+                                                @method('DELETE') <!-- Spoof DELETE method -->
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="confirmDelete({{ $product->product_id }})">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -127,28 +127,28 @@
 
     </div>
     <script>
-    function confirmDelete(productId) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        // If confirmed, submit the form
-        document.getElementById('delete-form-' + productId).submit();
-    }
-}
+        function confirmDelete(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                // If confirmed, submit the form
+                document.getElementById('delete-form-' + productId).submit();
+            }
+        }
 
 
         function editProduct(id, name, price, image) {
-        document.getElementById('product-id').value = id;
-        document.getElementById('fashion-name').value = name;
-        document.getElementById('fashion-price').value = price;
+            document.getElementById('product-id').value = id;
+            document.getElementById('fashion-name').value = name;
+            document.getElementById('fashion-price').value = price;
 
-        // Optional: Handle image preview if necessary
-        // Example: Display the current image in an img tag (if applicable)
-        if (image) {
-            const imgPreview = document.createElement('img');
-            imgPreview.src = `/path/to/images/${image}`; // Adjust this path as necessary
-            imgPreview.alt = 'Current Product Image';
-            imgPreview.style = 'max-width: 100%; margin-top: 10px;';
-            document.getElementById('fashion-image').parentElement.appendChild(imgPreview);
+            // Optional: Handle image preview if necessary
+            // Example: Display the current image in an img tag (if applicable)
+            if (image) {
+                const imgPreview = document.createElement('img');
+                imgPreview.src = `/path/to/images/${image}`; // Adjust this path as necessary
+                imgPreview.alt = 'Current Product Image';
+                imgPreview.style = 'max-width: 100%; margin-top: 10px;';
+                document.getElementById('fashion-image').parentElement.appendChild(imgPreview);
+            }
         }
-    }
     </script>
 @endsection

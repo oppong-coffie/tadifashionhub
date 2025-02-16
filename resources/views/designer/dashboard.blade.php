@@ -7,7 +7,7 @@
     
     ?>
     @if (session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success" id="successMessage">
             {{ session('success') }}
         </div>
     @endif
@@ -77,19 +77,12 @@
                                 <td>{{ $paidproduct->product_name }}</td>
                                 <td>{{ $paidproduct->product_price }}</td>
                                 <td>
-                                    <button class="btn btn-sm mr-2 bg-danger"
-                                        style="background-color: #e57373; color: white; border: none;">Reject</button>
-                                    <form
-                                        action="{{ route('servedproduct', [
-                                            'id' => $paidproduct->id,
-                                            'designer_id' => $paidproduct->designer_id,
-                                            'customer_id' => $paidproduct->customer_id,
-                                            'customer_name' => $paidproduct->customer_name,
-                                            'product_name' => $paidproduct->product_name,
-                                            'product_image' => $paidproduct->product_image,
-                                            'product_price' => $paidproduct->product_price,
-                                        ]) }}"
-                                        method="POST">
+                                    <form action="{{ route('rejectproduct', $paidproduct->id) }}" method="POST">
+                                        @csrf
+                                        <!-- Form fields -->
+                                        <button type="submit">Reject Product</button>
+                                    </form>
+                                        <form action="{{ route('servedproduct', $paidproduct->id) }}" method="POST">
                                         @csrf
                                         <!-- Form fields -->
                                         <button type="submit">Serve Product</button>
@@ -157,4 +150,15 @@
             </div>
         </div>
     </div>
+    <script>
+        setTimeout(function() {
+            document.getElementById('successMessage').style.display = 'none';
+        }, 30000); // 30 seconds
+    </script>
+        </style>
+        <script>
+            setTimeout(function() {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 10000); // 30 seconds
+        </script>
 @endsection

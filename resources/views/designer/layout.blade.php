@@ -9,6 +9,7 @@ $user_id = session('user_id');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <title>Fashion Shop Dashboard</title>
     <style>
         .hover-bg-green:hover {
@@ -16,6 +17,7 @@ $user_id = session('user_id');
             cursor: pointer;
         }
     </style>
+        
 </head>
 
 <body class="" style="background-color: #e0f7fa;">
@@ -39,8 +41,8 @@ $user_id = session('user_id');
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="{{ asset('images/' . $profile_image) }}" alt="Profile Picture"
-                                class="rounded-circle" width="30" height="30">
+                            <img src="{{ asset('images/user.png')}}" alt="Profile Picture"
+                                class="rounded-circle" width="50" height="30">
                             {{ $user_name }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -59,6 +61,7 @@ $user_id = session('user_id');
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/js/all.min.js"></script>
 </body>
 
 </html>

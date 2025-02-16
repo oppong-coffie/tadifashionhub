@@ -6,7 +6,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\PasswordResetModel;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+
 
 class AuthController extends Controller
 {
@@ -64,7 +67,7 @@ class AuthController extends Controller
                     return redirect()->route('designer.dashboard');
     
                 case 'customer':
-                    return redirect()->route('customer.dashboard')->with('success', 'Welcome, Customer!');
+                    return redirect()->route('customer.dashboard')->with('success', "Welcome {$user['name']}");
     
                 default:
                     \Log::warning('Unexpected user role: ' . $user->role);
@@ -79,7 +82,101 @@ class AuthController extends Controller
     }
     // END:: FUNCTION TO LOGIN
 
-    
+        //  Show Password reset request OTP form
+        public function showRequestForm()
+        {
+            return view('auth.forgot-password');
+        }
+
+         //  Handle OTP request identifier
+         public function requestOTP(Request $request)
+         {
+             $request->validate(['identifier' => 'required']);
+         
+             // Find user by email or phone
+             $user = User::where('email', $request->identifier)
+                         ->orWhere('phone', $request->identifier)
+                         ->first();
+         
+             if (!$user) {
+                 return back()->with('error', 'User not found');
+             }
+             https://api.openai.com/v1/chat/completions
+             // Generate a 4-digit OTP
+             $otp = rand(1000, 9999);
+         
+             // SMS API Variables
+             $key = 'd97868cc69d36af20e76';
+             $sender = 'TadiFashion';
+             $to = $user->phone;
+             $message = "Your OTP is: $otp";
+         
+             // Send SMS using NotifyGH API
+             $url = "https://sms.smsnotifygh.com/smsapi?key=$key&to=$to&msg=" . urlencode($message) . "&sender_id=$sender";
+         
+             // Send HTTP request
+             $response = Http::get($url);
+
+             // Store OTP in the database
+             PasswordResetModel::create([
+                 'user_id' => $user->id,
+                 'otp' => $otp
+             ]);
+         
+             // Redirect to OTP input page
+            //  return view('auth.take-otp', ['user_id' => $user->id]);
+             return redirect()->route('take.otp', ['user_id' => $user->id]);
+
+
+         }
+
+          // Verify OTP
+    public function verifyOTP(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required',
+            'otp' => 'required']);
+
+            $record = PasswordResetModel::where('user_id', $request->user_id)
+            ->where('otp', $request->otp)
+            ->first();
+
+        if (!$record) {
+            return back()->with('error', 'Invalid or expired OTP');
+        }
+
+        return redirect()->route('reset.form', ['user_id' => $request->user_id]);
+    }
+
+// Show password reset form
+    public function showResetForm($user_id)
+{
+    return view('auth.reset-form', ['user_id' => $user_id]);
+}
+
+// Show password reset form
+    public function showOtpForm($user_id)
+{
+    return view('auth.take-otp', ['user_id' => $user_id]);
+
+}
+
+// update the password
+         public function reset(Request $request)
+        {
+            $request->validate([
+                'user_id' => '',
+                'password' => 'required|confirmed'
+            ]);
+
+            User::where('id', $request->user_id)->update([
+                'password' => Hash::make($request->password)
+            ]);
+
+            PasswordResetModel::where('user_id', $request->user_id)->delete();
+
+            return redirect()->route('login')->with('success', 'Password reset successfully');
+        }
 
     // Logout
     public function logout()

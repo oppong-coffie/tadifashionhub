@@ -18,6 +18,10 @@
                 <input type="email" class="form-control" id="email" name="email" required>
             </div>
             <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" class="form-control" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
                 <label for="role">Role</label>
                 <select type="text" class="form-control" id="role" name="role" required>
                     <option value="">--select--</option>

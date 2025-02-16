@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('role');
             $table->timestamps();
+            $table->string('phone', 20)->nullable();
+
         });
     }
 

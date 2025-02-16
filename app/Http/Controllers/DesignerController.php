@@ -43,9 +43,8 @@ class DesignerController extends Controller
         product::create($validatedData);
     
         // Return a success response
-        return response()->json([
-            'message' => 'Product created successfully!'
-        ], 201); // 201 is HTTP status code for "Created"
+        return back()->with('success', 'Product has been added successfully!');
+
     }
     // END:: Add new product
 
@@ -97,25 +96,52 @@ class DesignerController extends Controller
         ]);
     }
     
-    // Served product
-    public function servedProducts(Request $request, $id, $designer_id, $customer_id, $customer_name, $product_name, $product_image, $product_price)
+    // START:: Move product from the paid tableto the served table
+    public function servedProducts(Request $request, $productid)
     {
-        // Store the served product
-        ServedMOdel::create([
-            'designer_id' => $designer_id,
-            'customer_id' => $customer_id,
-            'customer_name' => $customer_name,
-            'product_name' => $product_name,
-            'product_image' => $product_image,
-            'product_price' => $product_price
-        ]);
-
-        // Delete it from the paid table
-        PaidModel::where('id', $id)->delete();
+        // Find the paid product by ID
+        $paidProduct = PaidModel::findOrFail($productid);
     
-           // Redirect back with a success message
-    return back()->with('success', 'Product has been served successfully!');
+        // Store the served product
+        ServedModel::create([
+            "designer_id"   => $paidProduct->designer_id,
+            "customer_id"   => $paidProduct->customer_id,
+            "customer_name" => $paidProduct->customer_name,
+            "product_name"  => $paidProduct->product_name,
+            "product_image" => $paidProduct->product_image,
+            "product_price" => $paidProduct->product_price,
+        ]);
+    
+        // Delete the paid product after serving it
+        $paidProduct->delete();
+    
+        return back()->with('success', 'Product has been served successfully!');
     }
+    // END:: Move product from the paid table to the served table
+    
+    // START:: Move product from the paid tableto the served table
+    public function rejectProducts(Request $request, $productid)
+    {
+        // Find the paid product by ID
+        $paidProduct = PaidModel::findOrFail($productid);
+    
+        // Store the served product
+        RejectedModel::create([
+            "designer_id"   => $paidProduct->designer_id,
+            "customer_id"   => $paidProduct->customer_id,
+            "customer_name" => $paidProduct->customer_name,
+            "product_name"  => $paidProduct->product_name,
+            "product_image" => $paidProduct->product_image,
+            "product_price" => $paidProduct->product_price,
+        ]);
+    
+        // Delete the paid product after serving it
+        $paidProduct->delete();
+    
+        return back()->with('success', 'Product has been rejected successfully!');
+    }
+    // END:: Move product from the paid table to the served table
+
 
     // START::Deleting a product
     public function deleteProducts(Request $request, $id)
