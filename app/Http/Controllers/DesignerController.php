@@ -182,8 +182,6 @@ class DesignerController extends Controller
     return back()->with('success', 'Product updated successfully!');
 }
 
-     
-
         // START::  Update Product
 
 

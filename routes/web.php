@@ -60,5 +60,4 @@ Route::post('/reset', [AuthController::class, 'reset'])->name('reset');
 Route::get('/reset-form/{user_id}', [AuthController::class, 'showResetForm'])->name('reset.form');
 Route::get('/take-otp/{user_id}', [AuthController::class, 'showOtpForm'])->name('take.otp');
 
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

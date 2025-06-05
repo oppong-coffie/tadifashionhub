@@ -25,9 +25,8 @@
                     <div class="card shadow-sm">
                         <div class="d-flex justify-content-center align-items-center"
                             style="height: 200px; overflow: hidden;">
-                            <img src="{{ asset('storage/' . $product['product_image']) }}" class="card-img-top"
-                                alt="{{ $product['product_name'] }}" style="object-fit: cover; width: 100%; height: 100%;">
-                        </div>
+                            <img src="{{ asset('storage/' . $product['product_image']) }}" class="card-img-top" alt="Product Image">
+                            </div>
                         <div class="card-body text-center">
                             <h5 class="card-title font-weight-bold">{{ $product['product_name'] }}</h5>
                             <p class="card-text text-muted">${{ number_format($product['product_price'], 2) }}</p>
@@ -243,13 +242,6 @@
         }, 20000); // 60 secon
     </script>
     </style>
-
-
-
-    
-
-
-
     <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
     <script src="https://files.bpcontent.cloud/2024/11/21/17/20241121173844-75AW0NO9.js"></script>
     
