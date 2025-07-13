@@ -60,16 +60,17 @@ class customerController extends Controller
     public function customerDashboard()
     {
          $user = Auth::user();
+         dd($user);
 
-    if (!$user || $user->role !== 'customer') {
-        return redirect()->route('login')->withErrors(['access' => 'Unauthorized access.']);
-    }
+         if (!$user) {
+            \Log::error('User is null in customerDashboard');
+        }
     
         $products = Product::all();
-        $paidproducts = PaidModel::where('customer_id', $user->id)->get();
-        $servedproducts = servedModel::where('customer_id', $user->id)->get();
-        $rejectedproducts = rejectedModel::where('customer_id', $user->id)->get();
-        $cartItems = CartModel::where('customer_id', $user->id)->get();
+        $paidproducts = PaidModel::where('customer_id', $user->id)->all();
+        $servedproducts = servedModel::where('customer_id', $user->id)->all();
+        $rejectedproducts = rejectedModel::where('customer_id', $user->id)->all();
+        $cartItems = CartModel::where('customer_id', $user->id)->all();
 
     
         return view('customer.dashboard', [
