@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\PaidModel;
 use App\Models\RejectedModel;
-use App\Models\ServedMOdel;
+use App\Models\ServedModel;
 use App\Models\User;
 
 
