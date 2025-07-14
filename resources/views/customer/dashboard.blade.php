@@ -11,20 +11,19 @@
 @endif --}}
 
 @section('content')
-<div class="">kkk</div>
-    {{-- <div class="container"> --}}
-        {{-- <div class="row text-white rounded"
+    <div class="container">
+        <div class="row text-white rounded"
             style="background-image: url('{{ asset('images/dress10.gif') }}'); background-size: cover; background-position: center;">
             <div class="col text-center mb-4">
                 <h1 class="display-4">Welcome to Your Dashboard</h1>
                 <p class="lead">Explore our latest fashion products!</p>
             </div>
-        </div> --}}
+        </div>
 
-        {{-- <div class="row mt-3"> --}}
+        <div class="row mt-3">
             <!-- Loop through products and display each one -->
-            {{-- @foreach ($products as $product) --}}
-                {{-- <div class="col-md-4 mb-4">
+            @foreach ($products as $product)
+                <div class="col-md-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="d-flex justify-content-center align-items-center"
                             style="height: 200px; overflow: hidden;">
@@ -35,13 +34,13 @@
                             <p class="card-text text-muted">${{ number_format($product['product_price'], 2) }}</p>
 
                             <!-- Add to Cart Button (Triggers Modal) -->
-                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
+                            {{-- <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
                                 data-bs-target="#productDetailModal-{{ $product['product_id'] }}">
                                 <i class="fas fa-shopping-cart"></i> View Details
-                            </button>
+                            </button> --}}
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
                 <!-- Product Detail Modal -->
                 {{-- <div class="modal fade" id="productDetailModal-{{ $product['product_id'] }}" tabindex="-1"
@@ -186,10 +185,10 @@
                     {{-- </div> --}}
                 {{-- </div> --}}
                 <!--END:: Cart Modal -->
-            {{-- @endforeach --}}
-        {{-- </div> --}}
+            @endforeach
+        </div>
         
-    {{-- </div> --}}
+    </div>
 
     {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
