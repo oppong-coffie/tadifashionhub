@@ -68,11 +68,6 @@ class customerController extends Controller
         // $rejectedproducts = rejectedModel::where('customer_id', $user->id)->all();
         // $cartItems = CartModel::where('customer_id', $user->id)->all();
 
-    
-        // console.log($user_name);
-        // console.log($products);
-        // console.log($paidproducts);
-
 
         // return view('customer.dashboard', [
         //     'user_name' => $user->name,
@@ -82,7 +77,6 @@ class customerController extends Controller
         //     'servedproducts' => $servedproducts,
         //     'rejectedproducts' => $rejectedproducts,
         //     'cartItems' => $cartItems,
-            
         // ]);
 
     }
