@@ -1,4 +1,4 @@
-@extends('customer.layout')
+{{-- @extends('customer.layout') --}}
 
 {{-- @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="successMessage">
@@ -10,8 +10,8 @@
     </div>
 @endif --}}
 
-@section('content')
-    <div class="container">
+{{-- @section('content') --}}
+    {{-- <div class="container"> --}}
         {{-- <div class="row text-white rounded"
             style="background-image: url('{{ asset('images/dress10.gif') }}'); background-size: cover; background-position: center;">
             <div class="col text-center mb-4">
@@ -20,7 +20,7 @@
             </div>
         </div> --}}
 
-        <div class="row mt-3">
+        {{-- <div class="row mt-3"> --}}
             <!-- Loop through products and display each one -->
             {{-- @foreach ($products as $product) --}}
                 {{-- <div class="col-md-4 mb-4">
@@ -112,23 +112,23 @@
                 </div> --}}
 
                 <!-- Cart Modal -->
-                <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header bg-dark text-white">
-                                <h5 class="modal-title" id="cartModalLabel">Your Shopping Cart</h5>
-                                <div class="bg-secondary">
-                                    <button type="button" class="btn-close text-primary " data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
+                {{-- <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" --}}
+                    {{-- aria-hidden="true"> --}}
+                    {{-- <div class="modal-dialog modal-lg"> --}}
+                        {{-- <div class="modal-content"> --}}
+                            {{-- <div class="modal-header bg-dark text-white"> --}}
+                                {{-- <h5 class="modal-title" id="cartModalLabel">Your Shopping Cart</h5> --}}
+                                {{-- <div class="bg-secondary"> --}}
+                                    {{-- <button type="button" class="btn-close text-primary " data-bs-dismiss="modal" --}}
+                                        {{-- aria-label="Close"></button> --}}
 
-                                </div>
-                            </div>
+                                {{-- </div> --}}
+                            {{-- </div> --}}
 
-                            <div class="modal-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped text-center">
-                                        <thead>
+                            {{-- <div class="modal-body"> --}}
+                                {{-- <div class="table-responsive"> --}}
+                                    {{-- <table class="table table-striped text-center"> --}}
+                                        {{-- <thead>
                                             <tr>
                                                 <th>Image</th>
                                                 <th>Name</th>
@@ -137,7 +137,7 @@
                                                 <th>Subtotal</th>
                                                 <th>Action</th>
                                             </tr>
-                                        </thead>
+                                        </thead> --}}
                                         {{-- <tbody>
                                             @forelse($cartItems as $item)
                                                 <tr>
@@ -165,30 +165,30 @@
                                                 </tr>
                                             @endforelse
                                         </tbody> --}}
-                                    </table>
-                                </div>
-                            </div>
+                                    {{-- </table> --}}
+                                {{-- </div> --}}
+                            {{-- </div> --}}
 
-                            <div class="modal-footer">
+                            {{-- <div class="modal-footer"> --}}
                                 {{-- <h5 class="fw-bold me-auto">Total: $<span id="cartTotal">
                                         {{ number_format($cartItems->sum(function ($item) {return $item->product_price * $item->quantity;}),2) }}
                                     </span></h5> --}}
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> --}}
                                 {{-- <form action="{{ route('checkout') }}" method="POST"> --}}
                                     {{-- @csrf --}}
                                     {{-- <input type="hidden" name="user_id" value="{{ $product->customer_id }}"> --}}
                                     {{-- <input type="hidden" name="total_amount" value="{{ number_format($cartItems->sum(function($item) { return $item->product_price * $item->quantity; }), 2) }}"> --}}
                                     {{-- <button type="submit" class="btn btn-success">Checkout</button> --}}
                                 {{-- </form> --}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            {{-- </div> --}}
+                        {{-- </div> --}}
+                    {{-- </div> --}}
+                {{-- </div> --}}
                 <!--END:: Cart Modal -->
             {{-- @endforeach --}}
-        </div>
+        {{-- </div> --}}
         
-    </div>
+    {{-- </div> --}}
 
     {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -245,8 +245,30 @@
         }, 20000); // 60 secon
     </script> --}}
 
-    </style>
+    {{-- </style>
     <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
-    <script src="https://files.bpcontent.cloud/2024/11/21/17/20241121173844-75AW0NO9.js"></script>
+    <script src="https://files.bpcontent.cloud/2024/11/21/17/20241121173844-75AW0NO9.js"></script> --}}
     
-@endsection
+{{-- @endsection --}}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+    <h1>
+        CUSTOMER
+    </h1>
+    <div class="container mt-5">
+        <h1>Welcome to Takoradi Colors</h1>
+        <p>Explore the vibrant world of fashion.</p>
+    </div>
+
+</body>
+</html>
