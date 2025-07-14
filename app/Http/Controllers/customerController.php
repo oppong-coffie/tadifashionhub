@@ -61,8 +61,7 @@ class customerController extends Controller
     {
          $user = Auth::user();
 
-    
-        // $products = Product::all();
+        $products = Product::all();
         // $paidproducts = PaidModel::where('customer_id', $user->id)->get();
         // $servedproducts = servedModel::where('customer_id', $user->id)->get();
         // $rejectedproducts = rejectedModel::where('customer_id', $user->id)->get();
