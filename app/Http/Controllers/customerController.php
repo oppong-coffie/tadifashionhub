@@ -63,7 +63,7 @@ class customerController extends Controller
 
         $products = Product::all();
         $paidproducts = PaidModel::where('customer_id', $user->id)->get();
-        $servedproducts = servedModel::where('customer_id', $user->id)->get();
+        $servedproducts = ServedModel::where('customer_id', $user->id)->get();
         $rejectedproducts = rejectedModel::where('customer_id', $user->id)->get();
         $cartItems = CartModel::where('customer_id', $user->id)->get();
     
