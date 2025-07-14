@@ -61,6 +61,7 @@ class customerController extends Controller
     {
          $user = Auth::user();
          dd($user);
+         console.log('user exist');
 
          if (!$user) {
             \Log::error('User is null in customerDashboard');
@@ -73,6 +74,11 @@ class customerController extends Controller
         $cartItems = CartModel::where('customer_id', $user->id)->all();
 
     
+        console.log($user_name);
+        console.log($products);
+        console.log($paidproducts);
+
+        
         return view('customer.dashboard', [
             'user_name' => $user->name,
             'profile_image' => $user->profile_image ?? 'default.jpg',
@@ -83,6 +89,7 @@ class customerController extends Controller
             'cartItems' => $cartItems,
             
         ]);
+
     }
 
 
