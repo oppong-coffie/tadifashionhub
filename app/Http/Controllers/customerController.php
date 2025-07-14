@@ -62,7 +62,7 @@ class customerController extends Controller
          $user = Auth::user();
 
         $products = Product::all();
-        // $paidproducts = PaidModel::where('customer_id', $user->id)->get();
+        $paidproducts = PaidModel::where('customer_id', $user->id)->get();
         // $servedproducts = servedModel::where('customer_id', $user->id)->get();
         // $rejectedproducts = rejectedModel::where('customer_id', $user->id)->get();
         // $cartItems = CartModel::where('customer_id', $user->id)->get();
@@ -72,7 +72,7 @@ class customerController extends Controller
             'user_name' => $user->name,
             'profile_image' => $user->profile_image ?? 'default.jpg',
             'products' => $products,
-            // 'paidproducts' => $paidproducts,
+            'paidproducts' => $paidproducts,
             // 'servedproducts' => $servedproducts,
             // 'rejectedproducts' => $rejectedproducts,
             // 'cartItems' => $cartItems,
