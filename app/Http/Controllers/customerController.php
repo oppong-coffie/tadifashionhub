@@ -65,7 +65,7 @@ class customerController extends Controller
         $paidproducts = PaidModel::where('customer_id', $user->id)->get();
         // $servedproducts = servedModel::where('customer_id', $user->id)->get();
         // $rejectedproducts = rejectedModel::where('customer_id', $user->id)->get();
-        // $cartItems = CartModel::where('customer_id', $user->id)->get();
+        $cartItems = CartModel::where('customer_id', $user->id)->get();
 
     
         return view('customer.dashboard', [
@@ -75,7 +75,7 @@ class customerController extends Controller
             'paidproducts' => $paidproducts,
             // 'servedproducts' => $servedproducts,
             // 'rejectedproducts' => $rejectedproducts,
-            // 'cartItems' => $cartItems,
+            'cartItems' => $cartItems,
             
         ]);
     }
