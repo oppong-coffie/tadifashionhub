@@ -8,7 +8,7 @@ use App\Models\Product;
 use App\Models\PaidModel;
 use App\Models\CartModel;
 use App\Models\RejectedModel;
-use App\Models\ServedMOdel;
+use App\Models\ServedModel;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
@@ -72,7 +72,7 @@ class customerController extends Controller
             'profile_image' => $user->profile_image ?? 'default.jpg',
             'products' => $products,
             'paidproducts' => $paidproducts,
-            // 'servedproducts' => $servedproducts,
+            'servedproducts' => $servedproducts,
             'rejectedproducts' => $rejectedproducts,
             'cartItems' => $cartItems,
             
