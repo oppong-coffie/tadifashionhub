@@ -1,6 +1,6 @@
 <?php
 // Get session data
-$user_id = session('user_id');
+// $user_id = session('user_id');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,7 +45,7 @@ $user_id = session('user_id');
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ asset('images/user.png')}}" alt="Profile Picture"
                                 class="rounded-circle" width="50" height="30">
-                            {{ $user_name }}
+                            {{-- {{ $user_name }} --}} Ata
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
