@@ -66,29 +66,30 @@ class customerController extends Controller
          if (!$user) {
             \Log::error('User is null in customerDashboard');
         }
+        return view('welcome');
     
-        $products = Product::all();
-        $paidproducts = PaidModel::where('customer_id', $user->id)->all();
-        $servedproducts = servedModel::where('customer_id', $user->id)->all();
-        $rejectedproducts = rejectedModel::where('customer_id', $user->id)->all();
-        $cartItems = CartModel::where('customer_id', $user->id)->all();
+        // $products = Product::all();
+        // $paidproducts = PaidModel::where('customer_id', $user->id)->all();
+        // $servedproducts = servedModel::where('customer_id', $user->id)->all();
+        // $rejectedproducts = rejectedModel::where('customer_id', $user->id)->all();
+        // $cartItems = CartModel::where('customer_id', $user->id)->all();
 
     
-        console.log($user_name);
-        console.log($products);
-        console.log($paidproducts);
+        // console.log($user_name);
+        // console.log($products);
+        // console.log($paidproducts);
 
-        
-        return view('customer.dashboard', [
-            'user_name' => $user->name,
-            'profile_image' => $user->profile_image ?? 'default.jpg',
-            'products' => $products,
-            'paidproducts' => $paidproducts,
-            'servedproducts' => $servedproducts,
-            'rejectedproducts' => $rejectedproducts,
-            'cartItems' => $cartItems,
+
+        // return view('customer.dashboard', [
+        //     'user_name' => $user->name,
+        //     'profile_image' => $user->profile_image ?? 'default.jpg',
+        //     'products' => $products,
+        //     'paidproducts' => $paidproducts,
+        //     'servedproducts' => $servedproducts,
+        //     'rejectedproducts' => $rejectedproducts,
+        //     'cartItems' => $cartItems,
             
-        ]);
+        // ]);
 
     }
 
