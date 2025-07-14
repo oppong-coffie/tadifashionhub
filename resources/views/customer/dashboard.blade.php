@@ -1,5 +1,6 @@
 @extends('customer.layout')
-@if (session('success'))
+
+{{-- @if (session('success'))
     <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" id="successMessage">
         <marquee behavior="" direction="">
             {{ session('success') }}
@@ -7,22 +8,22 @@
 
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-@endif
+@endif --}}
 
 @section('content')
     <div class="container">
-        <div class="row text-white rounded"
+        {{-- <div class="row text-white rounded"
             style="background-image: url('{{ asset('images/dress10.gif') }}'); background-size: cover; background-position: center;">
             <div class="col text-center mb-4">
                 <h1 class="display-4">Welcome to Your Dashboard</h1>
                 <p class="lead">Explore our latest fashion products!</p>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row mt-3">
             <!-- Loop through products and display each one -->
-            @foreach ($products as $product)
-                <div class="col-md-4 mb-4">
+            {{-- @foreach ($products as $product) --}}
+                {{-- <div class="col-md-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="d-flex justify-content-center align-items-center"
                             style="height: 200px; overflow: hidden;">
@@ -39,11 +40,10 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Product Detail Modal -->
-                <!-- Product Detail Modal -->
-                <div class="modal fade" id="productDetailModal-{{ $product['product_id'] }}" tabindex="-1"
+                {{-- <div class="modal fade" id="productDetailModal-{{ $product['product_id'] }}" tabindex="-1"
                     aria-labelledby="productModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -109,7 +109,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Cart Modal -->
                 <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel"
@@ -138,7 +138,7 @@
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        {{-- <tbody>
                                             @forelse($cartItems as $item)
                                                 <tr>
                                                     <td><img src="{{ asset('storage/' . $item->product_image) }}"
@@ -164,31 +164,33 @@
                                                     <td colspan="6">Your cart is empty.</td>
                                                 </tr>
                                             @endforelse
-                                        </tbody>
+                                        </tbody> --}}
                                     </table>
                                 </div>
                             </div>
 
                             <div class="modal-footer">
-                                <h5 class="fw-bold me-auto">Total: $<span id="cartTotal">
+                                {{-- <h5 class="fw-bold me-auto">Total: $<span id="cartTotal">
                                         {{ number_format($cartItems->sum(function ($item) {return $item->product_price * $item->quantity;}),2) }}
-                                    </span></h5>
+                                    </span></h5> --}}
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <form action="{{ route('checkout') }}" method="POST">
-                                    @csrf
+                                {{-- <form action="{{ route('checkout') }}" method="POST"> --}}
+                                    {{-- @csrf --}}
                                     {{-- <input type="hidden" name="user_id" value="{{ $product->customer_id }}"> --}}
                                     {{-- <input type="hidden" name="total_amount" value="{{ number_format($cartItems->sum(function($item) { return $item->product_price * $item->quantity; }), 2) }}"> --}}
-                                    <button type="submit" class="btn btn-success">Checkout</button>
-                                </form>
+                                    {{-- <button type="submit" class="btn btn-success">Checkout</button> --}}
+                                {{-- </form> --}}
                             </div>
                         </div>
                     </div>
                 </div>
                 <!--END:: Cart Modal -->
-            @endforeach
+            {{-- @endforeach --}}
         </div>
+        
     </div>
-    <script>
+
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             function updateSubtotal(productId) {
                 const quantityInput = document.getElementById("quantity-" + productId);
@@ -241,7 +243,8 @@
         setTimeout(function() {
             document.getElementById('successMessage').style.display = 'none';
         }, 20000); // 60 secon
-    </script>
+    </script> --}}
+
     </style>
     <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
     <script src="https://files.bpcontent.cloud/2024/11/21/17/20241121173844-75AW0NO9.js"></script>

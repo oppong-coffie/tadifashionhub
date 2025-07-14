@@ -67,8 +67,8 @@ class customerController extends Controller
         $cartItems = CartModel::where('customer_id', $user->id)->all();
 
 // Open the customers page with the items
-        return view('customer.dashboard', [
-            'user_name' => $user->name,
+        return view('customer/dashboard', [
+            // 'user_name' => $user->name,
             'profile_image' => $user->profile_image ?? 'default.jpg',
             'products' => $products,
             'paidproducts' => $paidproducts,
