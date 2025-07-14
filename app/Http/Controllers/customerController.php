@@ -71,7 +71,7 @@ class customerController extends Controller
         return view('customer.dashboard', [
             'user_name' => $user->name,
             'profile_image' => $user->profile_image ?? 'default.jpg',
-            // 'products' => $products,
+            'products' => $products,
             // 'paidproducts' => $paidproducts,
             // 'servedproducts' => $servedproducts,
             // 'rejectedproducts' => $rejectedproducts,
