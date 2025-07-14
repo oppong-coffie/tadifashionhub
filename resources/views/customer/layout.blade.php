@@ -45,7 +45,7 @@
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ asset('images/user.png')}}" alt="Profile Picture"
                                 class="rounded-circle" width="50" height="30">
-                            {{-- {{ $user_name }} --}} Ata
+                            {{ $user_name }}
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Profile</a></li>

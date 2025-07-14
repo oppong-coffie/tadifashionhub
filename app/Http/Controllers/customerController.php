@@ -59,28 +59,26 @@ class customerController extends Controller
     // Login User
     public function customerDashboard()
     {
-     
-        return view('customer/dashboard');
+         $user = Auth::user();
+
     
         // $products = Product::all();
-        // $paidproducts = PaidModel::where('customer_id', $user->id)->all();
-        // $servedproducts = servedModel::where('customer_id', $user->id)->all();
-        // $rejectedproducts = rejectedModel::where('customer_id', $user->id)->all();
-        // $cartItems = CartModel::where('customer_id', $user->id)->all();
+        // $paidproducts = PaidModel::where('customer_id', $user->id)->get();
+        // $servedproducts = servedModel::where('customer_id', $user->id)->get();
+        // $rejectedproducts = rejectedModel::where('customer_id', $user->id)->get();
+        // $cartItems = CartModel::where('customer_id', $user->id)->get();
 
-
-
-
-        // return view('customer.dashboard', [
-        //     'user_name' => $user->name,
-        //     'profile_image' => $user->profile_image ?? 'default.jpg',
-        //     'products' => $products,
-        //     'paidproducts' => $paidproducts,
-        //     'servedproducts' => $servedproducts,
-        //     'rejectedproducts' => $rejectedproducts,
-        //     'cartItems' => $cartItems,
-        // ]);
-
+    
+        return view('customer.dashboard', [
+            'user_name' => $user->name,
+            // 'profile_image' => $user->profile_image ?? 'default.jpg',
+            // 'products' => $products,
+            // 'paidproducts' => $paidproducts,
+            // 'servedproducts' => $servedproducts,
+            // 'rejectedproducts' => $rejectedproducts,
+            // 'cartItems' => $cartItems,
+            
+        ]);
     }
 
 
