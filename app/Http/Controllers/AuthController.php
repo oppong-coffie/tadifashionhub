@@ -72,6 +72,7 @@ class AuthController extends Controller
                 default:
                     \Log::warning('Unexpected user role: ' . $user->role);
                     return redirect()->route('dashboard')->with('success', 'You are logged in!');
+                    
             }
         }
     

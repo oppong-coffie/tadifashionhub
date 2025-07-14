@@ -59,13 +59,7 @@ class customerController extends Controller
     // Login User
     public function customerDashboard()
     {
-         $user = Auth::user();
-         dd($user);
-         console.log('user exist');
-
-         if (!$user) {
-            \Log::error('User is null in customerDashboard');
-        }
+     
         return view('welcome');
     
         // $products = Product::all();
