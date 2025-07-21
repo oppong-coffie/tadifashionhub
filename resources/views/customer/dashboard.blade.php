@@ -27,8 +27,7 @@
                     <div class="card shadow-sm">
                         <div class="d-flex justify-content-center align-items-center"
                             style="height: 200px; overflow: hidden;">
-                            <img src="{{ asset('storage/' . $product['product_image']) }}" class="card-img-top" alt="Product Image">
-                            <img src="{{ asset('storage/' . $product['product_image']) }}" class="card-img-top" alt="Product Image">
+                            <img src={{ $product['product_image'] }} class="card-img-top" alt="Product Image">
     
                         </div>
                         <div class="card-body text-center">
@@ -58,7 +57,7 @@
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <img src="{{ asset('storage/' . $product['product_image']) }}"
+                                        <img src={{ $product['product_image'] }}
                                             class="img-fluid rounded shadow-sm" alt="{{ $product['product_name'] }}">
                                     </div>
 
@@ -143,7 +142,7 @@
                                          <tbody>
                                             @forelse($cartItems as $item)
                                                 <tr>
-                                                    <td><img src="{{ asset('storage/' . $item->product_image) }}"
+                                                    <td><img src={{ $item->product_image }}
                                                             width="50" alt="{{ $item->product_name }}" /></td>
                                                     <td>{{ $item->product_name }}</td>
                                                     <td>${{ number_format($item->product_price, 2) }}</td>
