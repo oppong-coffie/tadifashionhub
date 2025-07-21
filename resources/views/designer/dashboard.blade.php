@@ -25,7 +25,6 @@
                 </a>
             </div>
 
-
             <!-- Add New Fashion Section -->
             <div class="col-md-8 rounded" style="background-color: #ffffff;">
                 <h4 class="text-primary mb-">Add New Fashion</h4>

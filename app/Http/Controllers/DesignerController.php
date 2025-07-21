@@ -9,6 +9,12 @@ use App\Models\PaidModel;
 use App\Models\RejectedModel;
 use App\Models\ServedModel;
 use App\Models\User;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Psr7\Utils;
+
+
+
 
 
 class DesignerController extends Controller
@@ -22,29 +28,48 @@ class DesignerController extends Controller
     // START:: Add new product
     public function sendProduct(Request $request)
     {
-        // Validate the request data
+        // Step 1: Validate incoming request
         $validatedData = $request->validate([
-            'designer_id' => 'string',
-            'product_name' => 'string',
-            'product_image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate image file
-            'product_price' => 'numeric', // Assuming product price is numeric
+            'designer_id'    => 'required|string',
+            'product_name'   => 'required|string',
+            'product_image'  => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'product_price'  => 'required|numeric',
         ]);
     
-        // Handle the file upload
+        // Step 2: Check and process image
         if ($request->hasFile('product_image') && $request->file('product_image')->isValid()) {
-            // Store the image file in the 'public/products' directory
-            $imagePath = $request->file('product_image')->store('products', 'public');
+            $file      = $request->file('product_image');
+            $fileName  = Str::uuid() . '.' . $file->getClientOriginalExtension();
+            $filePath  = $file->getPathname();
+            $bucket    = 'materials'; // your Supabase bucket name
     
-            // Include the image path in the validated data to be saved in the database
-            $validatedData['product_image'] = $imagePath;
+            // Step 3: Upload to Supabase Storage
+            try {
+                $response = Http::withOptions(['verify' => true]) // remove 'verify' => false if SSL is fixed
+                    ->withHeaders([
+                        'apikey'        => 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjeGpjZW5oa3J4c25hYmdheG93Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzA5OTY1MiwiZXhwIjoyMDY4Njc1NjUyfQ.AS47W9F5dEEVIAv12tZbAA00xMegIgTtVSeG7O-RcPI',
+                        'Authorization' => 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjeGpjZW5oa3J4c25hYmdheG93Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzA5OTY1MiwiZXhwIjoyMDY4Njc1NjUyfQ.AS47W9F5dEEVIAv12tZbAA00xMegIgTtVSeG7O-RcPI',
+                        'Content-Type'  => $file->getMimeType(),
+                    ])->withBody(
+                        Utils::streamFor(fopen($filePath, 'r')),
+                        $file->getMimeType()
+                    )->put("https://bcxjcenhkrxsnabgaxow.supabase.co/storage/v1/object/$bucket/$fileName");
+    
+                if ($response->successful()) {
+                    // Set public URL (make sure bucket policy allows public access)
+                    $validatedData['product_image'] = "https://bcxjcenhkrxsnabgaxow.supabase.co/storage/v1/object/public/$bucket/$fileName";
+                } else {
+                    return back()->with('error', 'Image upload failed: ' . $response->body());
+                }
+            } catch (\Exception $e) {
+                return back()->with('error', 'Upload error: ' . $e->getMessage());
+            }
         }
     
-        // Create the product record in the database
-        product::create($validatedData);
+        // Step 4: Save to DB
+        Product::create($validatedData);
     
-        // Return a success response
         return back()->with('success', 'Product has been added successfully!');
-
     }
     // END:: Add new product
 
@@ -68,8 +93,6 @@ class DesignerController extends Controller
         return view('designer.products', compact('products', 'user_id', 'productCount', 'user_name', 'profile_image'));
     }
     
-
-
 
     public function designerDashboard()
     {
@@ -146,43 +169,99 @@ class DesignerController extends Controller
     // START::Deleting a product
     public function deleteProducts(Request $request, $id)
     {
-        // Delete the product with the given ID
-        Product::where('product_id', $id)->delete();
+        // Step 1: Get the product by ID
+        $product = Product::where('product_id', $id)->first();
     
-        // Redirect back with a success message
-        return back()->with('success', 'Product has been deleted successfully!');
-    }   
+        if (!$product) {
+            return back()->with('error', 'Product not found.');
+        }
+    
+        // Step 2: Extract file name from Supabase public URL
+        $imageUrl = $product->product_image;
+        $bucket = 'materials';
+    
+        // Parse the URL and get just the path portion
+        $parsedPath = parse_url($imageUrl, PHP_URL_PATH); // eg. /storage/v1/object/public/materials/filename.png
+    
+        // This will extract just the file name portion after /public/materials/
+        $needle = "/storage/v1/object/public/{$bucket}/";
+        $fileName = ltrim(Str::after($parsedPath, $needle), '/');
+    
+        // Step 3: Send DELETE request to Supabase
+        $deleteResponse = Http::withHeaders([
+            'apikey' => env('SUPABASE_SERVICE_KEY'),
+            'Authorization' => 'Bearer ' . env('SUPABASE_SERVICE_KEY'),
+        ])->delete("https://bcxjcenhkrxsnabgaxow.supabase.co/storage/v1/object/$bucket/$fileName");
+    
+        // Step 4: Check response
+        if (!$deleteResponse->successful()) {
+            return back()->with('error', 'Failed to delete image from Supabase: ' . $deleteResponse->body());
+        }
+    
+        // Step 5: Delete the product from the database
+        $product->delete();
+    
+        return back()->with('success', 'Product and its image deleted successfully.');
+    }
     // END::Deleting a product
 
      // START::  Update Product
-   public function updateProduct(Request $request)
-{
-    // Validate input data
-    $validatedData = $request->validate([
-        'product_id' => 'required|exists:products,product_id', // Ensure product exists
-        'product_name' => 'required|string|max:255',
-        'product_price' => 'required|numeric',
-        'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Optional image validation
-    ]);
-
-    // Find the product by product_id
-    $product = Product::findOrFail($validatedData['product_id']);
-    $product->product_name = $validatedData['product_name'];
-    $product->product_price = $validatedData['product_price'];
-
-    // Handle the file upload for product_image
-    if ($request->hasFile('product_image') && $request->file('product_image')->isValid()) {
-        $imagePath = $request->file('product_image')->store('products', 'public');
-        $product->product_image = $imagePath; // Update image path in the database
-    }
-
-    // Save the updated product
-    $product->save();
-
-    return back()->with('success', 'Product updated successfully!');
-}
-
-        // START::  Update Product
+     public function updateProduct(Request $request)
+     {
+         // Validate input data
+         $validatedData = $request->validate([
+             'product_id' => 'required|exists:products,product_id',
+             'product_name' => 'required|string|max:255',
+             'product_price' => 'required|numeric',
+             'product_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+         ]);
+     
+         // Fetch product
+         $product = Product::findOrFail($validatedData['product_id']);
+         $product->product_name = $validatedData['product_name'];
+         $product->product_price = $validatedData['product_price'];
+     
+         // If a new image is uploaded
+         if ($request->hasFile('product_image') && $request->file('product_image')->isValid()) {
+             $file = $request->file('product_image');
+             $fileName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+             $filePath = $file->getPathname();
+             $bucket = 'materials';
+     
+             // DELETE old image from Supabase
+             if ($product->product_image) {
+                 $parsedPath = parse_url($product->product_image, PHP_URL_PATH);
+                 $fileToDelete = Str::after($parsedPath, "/storage/v1/object/public/{$bucket}/");
+     
+                 Http::withHeaders([
+                     'apikey' => env('SUPABASE_SERVICE_KEY'),
+                     'Authorization' => 'Bearer ' . env('SUPABASE_SERVICE_KEY'),
+                 ])->delete("https://bcxjcenhkrxsnabgaxow.supabase.co/storage/v1/object/$bucket/$fileToDelete");
+             }
+     
+             // UPLOAD new image to Supabase
+             $uploadResponse = Http::withHeaders([
+                 'apikey' => env('SUPABASE_SERVICE_KEY'),
+                 'Authorization' => 'Bearer ' . env('SUPABASE_SERVICE_KEY'),
+                 'Content-Type' => $file->getMimeType(),
+             ])->withBody(
+                 \GuzzleHttp\Psr7\Utils::streamFor(fopen($filePath, 'r')),
+                 $file->getMimeType()
+             )->put("https://bcxjcenhkrxsnabgaxow.supabase.co/storage/v1/object/$bucket/$fileName");
+     
+             if ($uploadResponse->successful()) {
+                 $product->product_image = "https://bcxjcenhkrxsnabgaxow.supabase.co/storage/v1/object/public/$bucket/$fileName";
+             } else {
+                 return back()->with('error', 'Image upload failed: ' . $uploadResponse->body());
+             }
+         }
+     
+         // Save updated product
+         $product->save();
+     
+         return back()->with('success', 'Product updated successfully!');
+     }
+        // END::  Update Product
 
 
 

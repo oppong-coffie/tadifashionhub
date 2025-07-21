@@ -28,22 +28,24 @@
                         <div class="d-flex justify-content-center align-items-center"
                             style="height: 200px; overflow: hidden;">
                             <img src="{{ asset('storage/' . $product['product_image']) }}" class="card-img-top" alt="Product Image">
-                            </div>
+                            <img src="{{ asset('storage/' . $product['product_image']) }}" class="card-img-top" alt="Product Image">
+    
+                        </div>
                         <div class="card-body text-center">
                             <h5 class="card-title font-weight-bold">{{ $product['product_name'] }}</h5>
                             <p class="card-text text-muted">${{ number_format($product['product_price'], 2) }}</p>
 
                             <!-- Add to Cart Button (Triggers Modal) -->
-                            {{-- <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
                                 data-bs-target="#productDetailModal-{{ $product['product_id'] }}">
                                 <i class="fas fa-shopping-cart"></i> View Details
-                            </button> --}}
+                            </button>
                         </div>
                     </div>
                 </div>
 
                 <!-- Product Detail Modal -->
-                {{-- <div class="modal fade" id="productDetailModal-{{ $product['product_id'] }}" tabindex="-1"
+                <div class="modal fade" id="productDetailModal-{{ $product['product_id'] }}" tabindex="-1"
                     aria-labelledby="productModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -109,26 +111,26 @@
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
                 <!-- Cart Modal -->
-                {{-- <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" --}}
-                    {{-- aria-hidden="true"> --}}
-                    {{-- <div class="modal-dialog modal-lg"> --}}
-                        {{-- <div class="modal-content"> --}}
-                            {{-- <div class="modal-header bg-dark text-white"> --}}
-                                {{-- <h5 class="modal-title" id="cartModalLabel">Your Shopping Cart</h5> --}}
-                                {{-- <div class="bg-secondary"> --}}
-                                    {{-- <button type="button" class="btn-close text-primary " data-bs-dismiss="modal" --}}
-                                        {{-- aria-label="Close"></button> --}}
+                <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" --}}
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-dark text-white">
+                                <h5 class="modal-title" id="cartModalLabel">Your Shopping Cart</h5>
+                                <div class="bg-secondary">
+                                    <button type="button" class="btn-close text-primary " data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
 
-                                {{-- </div> --}}
-                            {{-- </div> --}}
+                                </div>
+                             </div>
 
-                            {{-- <div class="modal-body"> --}}
-                                {{-- <div class="table-responsive"> --}}
-                                    {{-- <table class="table table-striped text-center"> --}}
-                                        {{-- <thead>
+                            <div class="modal-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped text-center">
+                                         <thead>
                                             <tr>
                                                 <th>Image</th>
                                                 <th>Name</th>
@@ -137,8 +139,8 @@
                                                 <th>Subtotal</th>
                                                 <th>Action</th>
                                             </tr>
-                                        </thead> --}}
-                                        {{-- <tbody>
+                                        </thead>
+                                         <tbody>
                                             @forelse($cartItems as $item)
                                                 <tr>
                                                     <td><img src="{{ asset('storage/' . $item->product_image) }}"
@@ -164,33 +166,33 @@
                                                     <td colspan="6">Your cart is empty.</td>
                                                 </tr>
                                             @endforelse
-                                        </tbody> --}}
-                                    {{-- </table> --}}
-                                {{-- </div> --}}
-                            {{-- </div> --}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-                            {{-- <div class="modal-footer"> --}}
-                                {{-- <h5 class="fw-bold me-auto">Total: $<span id="cartTotal">
-                                        {{ number_format($cartItems->sum(function ($item) {return $item->product_price * $item->quantity;}),2) }}
-                                    </span></h5> --}}
-                                {{-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> --}}
-                                {{-- <form action="{{ route('checkout') }}" method="POST"> --}}
-                                    {{-- @csrf --}}
-                                    {{-- <input type="hidden" name="user_id" value="{{ $product->customer_id }}"> --}}
-                                    {{-- <input type="hidden" name="total_amount" value="{{ number_format($cartItems->sum(function($item) { return $item->product_price * $item->quantity; }), 2) }}"> --}}
-                                    {{-- <button type="submit" class="btn btn-success">Checkout</button> --}}
-                                {{-- </form> --}}
-                            {{-- </div> --}}
-                        {{-- </div> --}}
-                    {{-- </div> --}}
-                {{-- </div> --}}
+                            <div class="modal-footer">
+                                 <h5 class="fw-bold me-auto">Total: $<span id="cartTotal">
+                                         {{ number_format($cartItems->sum(function ($item) {return $item->product_price * $item->quantity;}),2) }} --}}
+                                     </span></h5>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <form action="{{ route('checkout') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="user_id" value="{{ $product->customer_id }}">
+                                    <input type="hidden" name="total_amount" value="{{ number_format($cartItems->sum(function($item) { return $item->product_price * $item->quantity; }), 2) }}">
+                                    <button type="submit" class="btn btn-success">Checkout</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
                 <!--END:: Cart Modal -->
             @endforeach
         </div>
         
     </div>
 
-    {{-- <script>
+    <script>
         document.addEventListener("DOMContentLoaded", function() {
             function updateSubtotal(productId) {
                 const quantityInput = document.getElementById("quantity-" + productId);
@@ -243,11 +245,11 @@
         setTimeout(function() {
             document.getElementById('successMessage').style.display = 'none';
         }, 20000); // 60 secon
-    </script> --}}
+    </script>
 
-    {{-- </style>
+     </style>
     <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
-    <script src="https://files.bpcontent.cloud/2024/11/21/17/20241121173844-75AW0NO9.js"></script> --}}
+    <script src="https://files.bpcontent.cloud/2024/11/21/17/20241121173844-75AW0NO9.js"></script> 
     
 @endsection
 

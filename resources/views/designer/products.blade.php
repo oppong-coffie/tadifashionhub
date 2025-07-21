@@ -83,9 +83,10 @@
                                     <tr>
                                         <td class="text-center">
                                             <!-- Increased image size, centered and rounded -->
-                                            <img src="{{ asset('storage/' . $product['product_image']) }}"
-                                                alt="Product Image" class="rounded-circle"
-                                                style="width: 90px; height: 90px; object-fit: cover;">
+                                            <img src={{$product['product_image']}}
+                                            alt="Product Image"
+                                            class="rounded-circle"
+                                            style="width: 90px; height: 90px; object-fit: cover;">
                                         </td>
                                         <td class="text-center">
                                             <!-- Fashion name with improved font size and weight -->
