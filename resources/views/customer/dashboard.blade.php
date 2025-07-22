@@ -23,25 +23,33 @@
         <div class="row mt-3">
             <!-- Loop through products and display each one -->
             @foreach ($products as $product)
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm">
-                        <div class="d-flex justify-content-center align-items-center"
-                            style="height: 200px; overflow: hidden;">
-                            <img src={{ $product['product_image'] }} class="card-img-top" alt="Product Image">
-    
-                        </div>
-                        <div class="card-body text-center">
-                            <h5 class="card-title font-weight-bold">{{ $product['product_name'] }}</h5>
-                            <p class="card-text text-muted">${{ number_format($product['product_price'], 2) }}</p>
-
-                            <!-- Add to Cart Button (Triggers Modal) -->
-                            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal"
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-lg rounded-4 h-100 overflow-hidden product-card">
+                    <div class="position-relative bg-light">
+                        <img src="{{ $product['product_image'] }}" 
+                            alt="Product Image" 
+                            class="w-100 product-img" 
+                            style="height: 230px; object-fit: cover;">
+                    </div>
+            
+                    <div class="card-body text-center px-4 py-3">
+                        <h5 class="text-dark fw-semibold mb-2" style="font-size: 1.1rem;">
+                            {{ $product['product_name'] }}
+                        </h5>
+                        <p class="text-muted mb-3" style="font-size: 0.95rem;">
+                            ${{ number_format($product['product_price'], 2) }}
+                        </p>
+            
+                        <button type="button" 
+                                class="btn btn-primary w-100 rounded-pill fw-medium"
+                                data-bs-toggle="modal" 
                                 data-bs-target="#productDetailModal-{{ $product['product_id'] }}">
-                                <i class="fas fa-shopping-cart"></i> View Details
-                            </button>
-                        </div>
+                            <i class="fas fa-eye me-2"></i> View Details
+                        </button>
                     </div>
                 </div>
+            </div>
+            
 
                 <!-- Product Detail Modal -->
                 <div class="modal fade" id="productDetailModal-{{ $product['product_id'] }}" tabindex="-1"
@@ -113,7 +121,7 @@
                 </div>
 
                 <!-- Cart Modal -->
-                <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" --}}
+                <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -172,7 +180,7 @@
 
                             <div class="modal-footer">
                                  <h5 class="fw-bold me-auto">Total: $<span id="cartTotal">
-                                         {{ number_format($cartItems->sum(function ($item) {return $item->product_price * $item->quantity;}),2) }} --}}
+                                         {{ number_format($cartItems->sum(function ($item) {return $item->product_price * $item->quantity;}),2) }}
                                      </span></h5>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <form action="{{ route('checkout') }}" method="POST">
@@ -246,7 +254,23 @@
         }, 20000); // 60 secon
     </script>
 
-     </style>
+<style>
+    .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+    }
+    .product-img {
+        transition: transform 0.4s ease;
+    }
+    .product-card:hover .product-img {
+        transform: scale(1.05);
+    }
+    </style>
+    
+
     <script src="https://cdn.botpress.cloud/webchat/v2.2/inject.js"></script>
     <script src="https://files.bpcontent.cloud/2024/11/21/17/20241121173844-75AW0NO9.js"></script> 
     

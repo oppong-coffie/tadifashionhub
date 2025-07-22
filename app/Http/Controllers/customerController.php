@@ -207,5 +207,4 @@ public function paymentCallback(Request $request)
     // If payment fails
     return redirect()->route('customer.dashboard')->with('error', 'Payment verification failed.');
 }
-
 }

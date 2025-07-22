@@ -48,6 +48,7 @@ Route::post('/addtocart', [customerController::class, 'addToCart'])->name('addto
 Route::get('/detail/{designer_id}/{product_image}/{product_price}/{product_name}', [customerController::class, 'detailToCart']
 )->name('detail');
 
+
 // Route::get('/cart-data', [customerController::class, 'getCartData'])->name('getCartData');
 Route::delete('/remove-from-cart/{id}', [customerController::class, 'removeFromCart'])->name('removeFromCart');
 Route::post('/checkout', [customerController::class, 'initiatePayment'])->name('checkout');
