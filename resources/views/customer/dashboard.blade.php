@@ -23,22 +23,22 @@
         <div class="row mt-3">
             <!-- Loop through products and display each one -->
             @foreach ($products as $product)
-            <div class="col-md-4 mb-4">
-                <div class="card border-0 shadow-lg rounded-4 h-100 overflow-hidden product-card">
+            <div class="col-md-3 mb-4">
+                <div class="border-0 shadow-lg rounded-4 h-100 overflow-hidden mb-1">
                     <div class="position-relative bg-light">
                         <img src="{{ $product['product_image'] }}" 
                             alt="Product Image" 
                             class="w-100 product-img" 
-                            style="height: 230px; object-fit: cover;">
+                            style="height: 250px; object-fit: cover;">
                     </div>
             
-                    <div class="card-body text-center px-4 py-3">
-                        <h5 class="text-dark fw-semibold mb-2" style="font-size: 1.1rem;">
+                    <div class="mt-1 text-center px-4">
+                        <div class="text-dark fw-semibold" style="font-size: 1.1rem;">
                             {{ $product['product_name'] }}
-                        </h5>
-                        <p class="text-muted mb-3" style="font-size: 0.95rem;">
+                        </div>
+                        <div class="text-muted" style="font-size: 0.90rem;">
                             ${{ number_format($product['product_price'], 2) }}
-                        </p>
+                        </div>
             
                         <button type="button" 
                                 class="btn btn-primary w-100 rounded-pill fw-medium"
