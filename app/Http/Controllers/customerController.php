@@ -57,18 +57,40 @@ class customerController extends Controller
 
 
     // Login User
-    public function customerDashboard()
+    public function customerDashboard(Request $request)
     {
-        $user = Auth::user(); // always available due to middleware
-
+        // Get the user ID from session
+        $userId = $request->session()->get('user_id');
+    
+        if (!$userId) {
+            return redirect()->route('login')->withErrors([
+                'email' => 'You must be logged in to access this page.',
+            ]);
+        }
+    
+        // Load user from database
+        $user = User::find($userId);
+    
+        if (!$user) {
+            return redirect()->route('login')->withErrors([
+                'email' => 'Invalid session, please log in again.',
+            ]);
+        }
+    
+        $products         = Product::all();
+        $paidproducts     = PaidModel::where('customer_id', $user->id)->get();
+        $servedproducts   = ServedModel::where('customer_id', $user->id)->get();
+        $rejectedproducts = RejectedModel::where('customer_id', $user->id)->get();
+        $cartItems        = CartModel::where('customer_id', $user->id)->get();
+    
         return view('customer.dashboard', [
             'user_name'        => $user->name,
             'profile_image'    => $user->profile_image ?? 'default.jpg',
-            'products'         => Product::all(),
-            'paidproducts'     => PaidModel::where('customer_id', $user->id)->get(),
-            'servedproducts'   => ServedModel::where('customer_id', $user->id)->get(),
-            'rejectedproducts' => RejectedModel::where('customer_id', $user->id)->get(),
-            'cartItems'        => CartModel::where('customer_id', $user->id)->get(),
+            'products'         => $products,
+            'paidproducts'     => $paidproducts,
+            'servedproducts'   => $servedproducts,
+            'rejectedproducts' => $rejectedproducts,
+            'cartItems'        => $cartItems,
         ]);
     }
     
