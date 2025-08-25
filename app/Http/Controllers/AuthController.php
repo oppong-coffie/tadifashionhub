@@ -46,7 +46,6 @@ class AuthController extends Controller
     }
     
     // START:: FUNCTION TO LOGIN
-
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -75,7 +74,6 @@ class AuthController extends Controller
             'email' => 'Invalid login credentials.',
         ])->onlyInput('email');
     }
-    
     // END:: FUNCTION TO LOGIN
 
         //  Show Password reset request OTP form
