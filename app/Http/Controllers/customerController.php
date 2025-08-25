@@ -147,88 +147,72 @@ public function detailToCart($designer_id, $product_image, $product_price, $prod
     return view('customer.detail', compact('detailItems'));
 }
 
-// Initiate the Paystack payment
 public function initiatePayment(Request $request)
 {
     $userId = Auth::id();
     $cartItems = CartModel::where('customer_id', $userId)->get();
 
-    if ($cartItems->isEmpty()) {
-        return back()->with('error', 'Your cart is empty.');
-    }
-
-    // Calculate total
-    $totalAmount = $cartItems->sum(function ($item) {
-        return $item->product_price * $item->quantity;
-    });
+    // Calculate total price
+    $totalAmount = $cartItems->sum(fn($item) => $item->product_price * $item->quantity);
 
     // Prepare data for Paystack
     $paymentData = [
         'email' => Auth::user()->email,
-        'amount' => $totalAmount * 100,  // Paystack needs amount in kobo
+        'amount' => $totalAmount * 100, // Paystack expects amount in kobo
         'callback_url' => route('payment.callback'),
     ];
 
-    // Initialize Paystack transaction
+    // Initialize payment with Paystack
     $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . env('PAYSTACK_SECRET_KEY'),
-        'Accept'        => 'application/json',
+        'Cache-Control' => 'no-cache',
     ])->post('https://api.paystack.co/transaction/initialize', $paymentData);
 
     $data = $response->json();
 
     if (isset($data['status']) && $data['status'] === true) {
-        return redirect($data['data']['authorization_url']);
+        // Redirect to Paystack checkout page
+        return redirect()->away($data['data']['authorization_url']);
     }
 
     return back()->with('error', 'Payment initialization failed. Please try again.');
 }
 
-
-// Handle Paystack callback (after successful payment)
 public function paymentCallback(Request $request)
 {
     $userId = Auth::id();
-
-    // Paystack returns reference in the query string
     $reference = $request->get('reference');
-    if (!$reference) {
-        return redirect()->route('customer.dashboard')->with('error', 'No payment reference found.');
-    }
 
-    // Verify payment with Paystack
+    // Verify the payment
     $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . env('PAYSTACK_SECRET_KEY'),
     ])->get('https://api.paystack.co/transaction/verify/' . $reference);
 
     $data = $response->json();
 
-    if (isset($data['status']) && $data['status'] === true && $data['data']['status'] === 'success') {
-        // ✅ Payment successful
+    if ($data['status'] === true && $data['data']['status'] === 'success') {
+        // Move items from cart to paid table
         $cartItems = CartModel::where('customer_id', $userId)->get();
-
         foreach ($cartItems as $item) {
             PaidModel::create([
-                'designer_id'   => $item->designer_id,
-                'customer_id'   => $userId,
+                'designer_id' => $item->designer_id,
+                'customer_id' => $userId,
                 'customer_name' => Auth::user()->name,
-                'product_name'  => $item->product_name,
+                'product_name' => $item->product_name,
                 'product_image' => $item->product_image,
                 'product_price' => $item->product_price,
-                'quantity'      => $item->quantity,
-                'reference'     => $reference, // 🔑 Keep Paystack ref for tracking
+                'quantity' => $item->quantity,
             ]);
         }
 
         // Clear cart
         CartModel::where('customer_id', $userId)->delete();
 
-        return redirect()->route('customer.dashboard')
-            ->with('success', 'Payment successful! Your items are now in purchases.');
+        return redirect()->route('customer.dashboard')->with('success', 'Payment successful! Items moved to your purchases.');
     }
 
-    // ❌ Payment failed
-    return redirect()->route('customer.dashboard')->with('error', 'Payment verification failed. Please try again.');
+    return redirect()->route('customer.dashboard')->with('error', 'Payment verification failed.');
 }
+
 
 }

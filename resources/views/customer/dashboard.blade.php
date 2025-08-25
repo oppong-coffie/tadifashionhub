@@ -185,15 +185,17 @@
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <form action="{{ route('checkout') }}" method="POST">
                                     @csrf
+                                    
                                     {{-- Logged-in user --}}
                                     <input type="hidden" name="user_id" value="{{ auth()->id() }}">
-                                
+                                    
                                     {{-- Total amount (raw numeric value) --}}
                                     <input type="hidden" name="total_amount" 
-                                        value="{{ $cartItems->sum(function($item) { return $item->product_price * $item->quantity; }) }}">
-                                
+                                        value="{{ $cartItems->sum(fn($item) => $item->product_price * $item->quantity) }}">
+                                    
                                     <button type="submit" class="btn btn-success">Checkout</button>
                                 </form>
+                                
                                 
                             </div>
                         </div>
