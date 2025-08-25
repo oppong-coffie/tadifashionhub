@@ -149,6 +149,8 @@ public function detailToCart($designer_id, $product_image, $product_price, $prod
 
 public function initiatePayment(Request $request)
 {
+    dd('checkout reached');
+
     $userId = Auth::id();
     $cartItems = CartModel::where('customer_id', $userId)->get();
 
