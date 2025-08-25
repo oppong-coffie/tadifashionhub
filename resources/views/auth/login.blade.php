@@ -9,7 +9,7 @@
         </div>
         <form method="POST" action="{{ route('login.post') }}">
             @csrf
-            
+        
             {{-- Show global error messages --}}
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -40,15 +40,22 @@
             </div>
         
             {{-- Password field --}}
-            <div class="form-group"> 
+            <div class="form-group position-relative">
                 <label for="password">Password</label>
-                <input 
-                    type="password" 
-                    class="form-control @error('password') is-invalid @enderror" 
-                    id="password" 
-                    name="password" 
-                    required
-                >
+                <div class="input-group">
+                    <input 
+                        type="password" 
+                        class="form-control @error('password') is-invalid @enderror" 
+                        id="password" 
+                        name="password" 
+                        required
+                    >
+                    <div class="input-group-append">
+                        <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer;">
+                            <i class="fa fa-eye" id="togglePasswordIcon"></i>
+                        </span>
+                    </div>
+                </div>
                 @error('password')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
@@ -58,6 +65,25 @@
         
             <button type="submit" class="btn btn-fashion btn-block mt-3">Login</button>
         </form>
+        
+        {{-- JS for toggle --}}
+        <script>
+            function togglePassword() {
+                const passwordInput = document.getElementById("password");
+                const icon = document.getElementById("togglePasswordIcon");
+                
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                } else {
+                    passwordInput.type = "password";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
+                }
+            }
+        </script>
+        
         
         
 
