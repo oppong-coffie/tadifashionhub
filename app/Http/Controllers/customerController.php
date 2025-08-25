@@ -57,30 +57,24 @@ class customerController extends Controller
 
 
     // Login User
-
-
     public function customerDashboard()
     {
-        $user = Auth::user();
+        $user = Auth::user(); // always available (auth middleware enforces login)
     
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'You must log in first.');
-        }
-    
-        $products = Product::all();
-        $paidproducts = PaidModel::where('customer_id', $user->id)->get();
-        $servedproducts = ServedModel::where('customer_id', $user->id)->get();
-        $rejectedproducts = RejectedModel::where('customer_id', $user->id)->get();
-        $cartItems = CartModel::where('customer_id', $user->id)->get();
+        $products        = Product::all();
+        $paidproducts    = PaidModel::where('customer_id', $user->id)->get();
+        $servedproducts  = ServedModel::where('customer_id', $user->id)->get();
+        $rejectedproducts= RejectedModel::where('customer_id', $user->id)->get();
+        $cartItems       = CartModel::where('customer_id', $user->id)->get();
     
         return view('customer.dashboard', [
-            'user_name' => $user->name,
-            'profile_image' => $user->profile_image ?? 'default.jpg',
-            'products' => $products,
-            'paidproducts' => $paidproducts,
-            'servedproducts' => $servedproducts,
+            'user_name'        => $user->name,
+            'profile_image'    => $user->profile_image ?? 'default.jpg',
+            'products'         => $products,
+            'paidproducts'     => $paidproducts,
+            'servedproducts'   => $servedproducts,
             'rejectedproducts' => $rejectedproducts,
-            'cartItems' => $cartItems,
+            'cartItems'        => $cartItems,
         ]);
     }
     
