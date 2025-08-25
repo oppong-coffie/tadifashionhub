@@ -55,7 +55,6 @@ class customerController extends Controller
         return view('fashion_shop', compact('products'));
     }
 
-
     // Login User
     public function customerDashboard(Request $request)
     {

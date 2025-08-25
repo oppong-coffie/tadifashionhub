@@ -16,17 +16,10 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::get('/', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/', [AuthController::class, 'login'])->name('login.post');
 
-// Customer routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/customer/dashboard', [CustomerController::class, 'customerDashboard'])
-        ->name('customer.dashboard');
-});
-
-// Designer routes
-Route::middleware(['auth'])->group(function () {
-    Route::get('/designer/dashboard', [DesignerController::class, 'designerDashboard'])
-        ->name('designer.dashboard');
-});
+// Route::get('/customer/dashboard', [AuthController::class, 'customer_dashboard'])->name('customer.dashboard');
+// Route::get('/designer/dashboa', [DesignerController::class, 'designer_dashboard'])->name('designer.dashboard');
+Route::get('/designer/dashboard', [DesignerController::class, 'designerDashboard'])->name('designer.dashboard');
+Route::get('/customer/dashboard', [CustomerController::class, 'customerDashboard'])->name('customer.dashboard');
 
 Route::get('/products/{user_id}', [customerController::class, 'getallproducts'])->name('getproducts');
 
