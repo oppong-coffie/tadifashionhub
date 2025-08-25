@@ -28,6 +28,7 @@ class AuthController extends Controller
             'password' => 'required|string|confirmed',
             'role' => 'in:customer,designer', // Ensures only valid roles are accepted
         ]);
+        
     
         User::create([
             'name' => $request->name,
