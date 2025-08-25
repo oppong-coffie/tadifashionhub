@@ -37,7 +37,7 @@
                             {{ $product['product_name'] }}
                         </div>
                         <div class="text-muted" style="font-size: 0.90rem;">
-                            ${{ number_format($product['product_price'], 2) }}
+                            GHS {{ number_format($product['product_price'], 2) }}
                         </div>
             
                         <button type="button" 
@@ -102,7 +102,7 @@
                                             </div>
 
                                             <div class="mt-3">
-                                                <h5 class="fw-bold">Subtotal: $<span
+                                                <h5 class="fw-bold">Subtotal: GHS<span
                                                         id="subtotal-{{ $product['product_id'] }}">{{ number_format($product['product_price'], 2) }}</span>
                                                 </h5>
                                             </div>
@@ -153,9 +153,9 @@
                                                     <td><img src={{ $item->product_image }}
                                                             width="50" alt="{{ $item->product_name }}" /></td>
                                                     <td>{{ $item->product_name }}</td>
-                                                    <td>${{ number_format($item->product_price, 2) }}</td>
+                                                    <td>GHS{{ number_format($item->product_price, 2) }}</td>
                                                     <td>{{ $item->quantity }}</td>
-                                                    <td>${{ number_format($item->product_price * $item->quantity, 2) }}
+                                                    <td>GHS{{ number_format($item->product_price * $item->quantity, 2) }}
                                                     </td>
                                                     <td>
                                                         <!-- Optionally add a remove button or link -->
@@ -179,7 +179,7 @@
                             </div>
 
                             <div class="modal-footer">
-                                 <h5 class="fw-bold me-auto">Total: $<span id="cartTotal">
+                                 <h5 class="fw-bold me-auto">Total: GHS<span id="cartTotal">
                                          {{ number_format($cartItems->sum(function ($item) {return $item->product_price * $item->quantity;}),2) }}
                                      </span></h5>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
