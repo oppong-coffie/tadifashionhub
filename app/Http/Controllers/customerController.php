@@ -59,22 +59,16 @@ class customerController extends Controller
     // Login User
     public function customerDashboard()
     {
-        $user = Auth::user(); // always available (auth middleware enforces login)
-    
-        $products        = Product::all();
-        $paidproducts    = PaidModel::where('customer_id', $user->id)->get();
-        $servedproducts  = ServedModel::where('customer_id', $user->id)->get();
-        $rejectedproducts= RejectedModel::where('customer_id', $user->id)->get();
-        $cartItems       = CartModel::where('customer_id', $user->id)->get();
-    
+        $user = Auth::user(); // always available due to middleware
+
         return view('customer.dashboard', [
             'user_name'        => $user->name,
             'profile_image'    => $user->profile_image ?? 'default.jpg',
-            'products'         => $products,
-            'paidproducts'     => $paidproducts,
-            'servedproducts'   => $servedproducts,
-            'rejectedproducts' => $rejectedproducts,
-            'cartItems'        => $cartItems,
+            'products'         => Product::all(),
+            'paidproducts'     => PaidModel::where('customer_id', $user->id)->get(),
+            'servedproducts'   => ServedModel::where('customer_id', $user->id)->get(),
+            'rejectedproducts' => RejectedModel::where('customer_id', $user->id)->get(),
+            'cartItems'        => CartModel::where('customer_id', $user->id)->get(),
         ]);
     }
     
