@@ -10,16 +10,56 @@
         <form method="POST" action="{{ route('login.post') }}">
             @csrf
             
+            {{-- Show global error messages --}}
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+        
+            {{-- Email field --}}
             <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <input 
+                    type="email" 
+                    class="form-control @error('email') is-invalid @enderror" 
+                    id="email" 
+                    name="email" 
+                    value="{{ old('email') }}" 
+                    required
+                >
+                @error('email')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
+        
+            {{-- Password field --}}
             <div class="form-group"> 
-                <label for="password">Password: </label>
-                <input type="password" class="form-control" id="password" name="password" required>
+                <label for="password">Password</label>
+                <input 
+                    type="password" 
+                    class="form-control @error('password') is-invalid @enderror" 
+                    id="password" 
+                    name="password" 
+                    required
+                >
+                @error('password')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror
             </div>
+        
             <button type="submit" class="btn btn-fashion btn-block mt-3">Login</button>
         </form>
+        
+        
 
         <div class="text-center mt-3">
             <a href="{{ route('password.request') }}" class="text-decoration-none">Forgot password</a>

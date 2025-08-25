@@ -48,30 +48,37 @@ class AuthController extends Controller
     // START:: FUNCTION TO LOGIN
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        // Validate credentials
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
     
+        // Attempt to log the user in
         if (Auth::attempt($credentials)) {
-            $request->session()->regenerate(); // ✅ secure session regeneration
             $user = Auth::user();
+    
+            // Store the user ID in the session
+            $request->session()->put('user_id', $user->id);
     
             // Redirect based on role
             switch ($user->role) {
                 case 'designer':
-                    return redirect()->route('designer.dashboard')
-                        ->with('success', "Welcome back, {$user->name}");
+                    return redirect()->route('designer.dashboard');
     
                 case 'customer':
-                    return redirect()->route('customer.dashboard')
-                        ->with('success', "Welcome back, {$user->name}");
+                    return redirect()->route('customer.dashboard')->with('success', "Welcome {$user['name']}");
     
                 default:
                     \Log::warning('Unexpected user role: ' . $user->role);
-                    return redirect()->route('home')->with('success', 'You are logged in!');
+                    return redirect()->route('dashboard')->with('success', 'You are logged in!');
+                    
             }
         }
     
+        // Return with errors if authentication fails
         return back()->withErrors([
-            'email' => 'Invalid login credentials.',
+            'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
     // END:: FUNCTION TO LOGIN
