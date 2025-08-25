@@ -149,36 +149,26 @@ public function detailToCart($designer_id, $product_image, $product_price, $prod
 
 public function initiatePayment(Request $request)
 {
-    dd('checkout reached');
-
     $userId = Auth::id();
     $cartItems = CartModel::where('customer_id', $userId)->get();
 
-    // Calculate total price
-    $totalAmount = $cartItems->sum(fn($item) => $item->product_price * $item->quantity);
+    $totalAmount = $cartItems->sum(function ($item) {
+        return $item->product_price * $item->quantity;
+    });
 
-    // Prepare data for Paystack
     $paymentData = [
         'email' => Auth::user()->email,
-        'amount' => $totalAmount * 100, // Paystack expects amount in kobo
+        'amount' => $totalAmount * 100, // in kobo
         'callback_url' => route('payment.callback'),
     ];
 
-    // Initialize payment with Paystack
     $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . env('PAYSTACK_SECRET_KEY'),
-        'Cache-Control' => 'no-cache',
     ])->post('https://api.paystack.co/transaction/initialize', $paymentData);
 
-    $data = $response->json();
-
-    if (isset($data['status']) && $data['status'] === true) {
-        // Redirect to Paystack checkout page
-        return redirect()->away($data['data']['authorization_url']);
-    }
-
-    return back()->with('error', 'Payment initialization failed. Please try again.');
+    dd($response->json()); // 👈 Show full Paystack response
 }
+
 
 public function paymentCallback(Request $request)
 {
