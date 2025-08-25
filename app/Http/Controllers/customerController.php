@@ -57,14 +57,20 @@ class customerController extends Controller
 
 
     // Login User
+
+
     public function customerDashboard()
     {
-         $user = Auth::user();
-
+        $user = Auth::user();
+    
+        if (!$user) {
+            return redirect()->route('login')->with('error', 'You must log in first.');
+        }
+    
         $products = Product::all();
         $paidproducts = PaidModel::where('customer_id', $user->id)->get();
         $servedproducts = ServedModel::where('customer_id', $user->id)->get();
-        $rejectedproducts = rejectedModel::where('customer_id', $user->id)->get();
+        $rejectedproducts = RejectedModel::where('customer_id', $user->id)->get();
         $cartItems = CartModel::where('customer_id', $user->id)->get();
     
         return view('customer.dashboard', [
@@ -75,9 +81,9 @@ class customerController extends Controller
             'servedproducts' => $servedproducts,
             'rejectedproducts' => $rejectedproducts,
             'cartItems' => $cartItems,
-            
         ]);
     }
+    
 
 
     // START:: Add to cart

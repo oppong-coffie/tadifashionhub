@@ -9,6 +9,7 @@
         </div>
         <form method="POST" action="{{ route('login.post') }}">
             @csrf
+            
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" class="form-control" id="email" name="email" required>
